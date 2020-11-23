@@ -14,30 +14,50 @@ class Bab_soal extends RestController {
 
     public function index_post()
     {
-        $deskripsi = $this->post('post');
+        date_default_timezone_set('Hongkong');
+        $data = array(
+                    'deskripsi' => $this->post('deskripsi'),
+                    'id_mapel' => $this->post('id_mapel'),
+                    'create_at' => date("Y-m-d H:i:s")
+                );
 
-        // $id_sumber_data = $this->input->post('id_sumber_data');
-        // print_r{"lll"};
-        $this->response("post", 200 );
+        $insert = $this->db->insert('bab_soal', $data);
+        if ($insert) {
+            $this->response($data, 200);
+        } else {
+            $this->response(array('status' => 'fail', 502));
+        }
         
     }
     public function index_put()
     {
-        $deskripsi = $this->post('put');
-
-        // $id_sumber_data = $this->input->post('id_sumber_data');
-        // print_r{"lll"};
-        $this->response("put", 200 );
+        date_default_timezone_set('Hongkong');
+        $id = $this->put('id');
+        $data = array(
+                    'deskripsi' => $this->put('deskripsi'),
+                    'id_mapel' => $this->put('id_mapel'),
+                    'update_at' => date("Y-m-d H:i:s")
+                );
+        $this->db->where('id', $id);
+        $update = $this->db->update('bab_soal', $data);
+        if ($update) {
+            $this->response($data, 200);
+        } else {
+            $this->response(array('status' => 'fail', 502));
+        }
         
     }
 
     public function index_delete()
     {
-        $deskripsi = $this->post('delete');
-
-        // $id_sumber_data = $this->input->post('id_sumber_data');
-        // print_r{"lll"};
-        $this->response("delete", 200 );
+        $id = $this->delete('id');
+        $this->db->where('id', $id);
+        $delete = $this->db->delete('bab_soal');
+        if ($delete) {
+            $this->response(array('status' => 'success'), 201);
+        } else {
+            $this->response(array('status' => 'fail', 502));
+        }
         
     }
 
@@ -46,7 +66,7 @@ class Bab_soal extends RestController {
        
         $id = $this->get( 'id' );
         
-        $jsonData = $this->db->get('mapel')->result();
+        $jsonData = $this->db->get('bab_soal')->result();
         if ( $id === null )
         {
             // Check if the users data store contains users
@@ -70,7 +90,7 @@ class Bab_soal extends RestController {
             if ( array_key_exists( $id, $jsonData ) )
             {
                 $this->db->select("*");
-                $this->db->from("mapel");
+                $this->db->from("bab_soal");
                 $this->db->where('id', $id);
                 $jsonData = $this->db->get()->result();
                 $this->response( $jsonData, 200 );

@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 use chriskacerguis\RestServer\RestController;
 
-class Mapel extends RestController {
+class Tingkat_kesulitan extends RestController {
 
     function __construct()
     {
@@ -14,30 +14,44 @@ class Mapel extends RestController {
 
     public function index_post()
     {
-        $deskripsi = $this->post('post');
+        $data = array(
+                    'deskripsi' => $this->post('deskripsi')
+                );
 
-        // $id_sumber_data = $this->input->post('id_sumber_data');
-        // print_r{"lll"};
-        $this->response("post", 200 );
+        $insert = $this->db->insert('tingkat_kesulitan', $data);
+        if ($insert) {
+            $this->response($data, 200);
+        } else {
+            $this->response(array('status' => 'fail', 502));
+        }
         
     }
     public function index_put()
     {
-        $deskripsi = $this->post('put');
-
-        // $id_sumber_data = $this->input->post('id_sumber_data');
-        // print_r{"lll"};
-        $this->response("put", 200 );
+        $id = $this->put('id');
+        $data = array(
+                    'deskripsi' => $this->put('deskripsi')
+                );
+        $this->db->where('id', $id);
+        $update = $this->db->update('tingkat_kesulitan', $data);
+        if ($update) {
+            $this->response($data, 200);
+        } else {
+            $this->response(array('status' => 'fail', 502));
+        }
         
     }
 
     public function index_delete()
     {
-        $deskripsi = $this->post('delete');
-
-        // $id_sumber_data = $this->input->post('id_sumber_data');
-        // print_r{"lll"};
-        $this->response("delete", 200 );
+        $id = $this->delete('id');
+        $this->db->where('id', $id);
+        $delete = $this->db->delete('tingkat_kesulitan');
+        if ($delete) {
+            $this->response(array('status' => 'success'), 201);
+        } else {
+            $this->response(array('status' => 'fail', 502));
+        }
         
     }
 
@@ -46,7 +60,7 @@ class Mapel extends RestController {
        
         $id = $this->get( 'id' );
         
-        $jsonData = $this->db->get('mapel')->result();
+        $jsonData = $this->db->get('tingkat_kesulitan')->result();
         if ( $id === null )
         {
             // Check if the users data store contains users
@@ -70,7 +84,7 @@ class Mapel extends RestController {
             if ( array_key_exists( $id, $jsonData ) )
             {
                 $this->db->select("*");
-                $this->db->from("mapel");
+                $this->db->from("tingkat_kesulitan");
                 $this->db->where('id', $id);
                 $jsonData = $this->db->get()->result();
                 $this->response( $jsonData, 200 );

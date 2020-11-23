@@ -14,30 +14,44 @@ class Mapel extends RestController {
 
     public function index_post()
     {
-        $deskripsi = $this->post('post coba');
+        $data = array(
+                    'deskripsi' => $this->post('deskripsi')
+                );
 
-        // $id_sumber_data = $this->input->post('id_sumber_data');
-        // print_r{"lll"};
-        $this->response("post", 200 );
+        $insert = $this->db->insert('mapel', $data);
+        if ($insert) {
+            $this->response($data, 200);
+        } else {
+            $this->response(array('status' => 'fail', 502));
+        }
         
     }
     public function index_put()
     {
-        $deskripsi = $this->post('put');
-
-        // $id_sumber_data = $this->input->post('id_sumber_data');
-        // print_r{"lll"};
-        $this->response("put", 200 );
+        $id = $this->put('id');
+        $data = array(
+                    'deskripsi' => $this->put('deskripsi')
+                );
+        $this->db->where('id', $id);
+        $update = $this->db->update('mapel', $data);
+        if ($update) {
+            $this->response($data, 200);
+        } else {
+            $this->response(array('status' => 'fail', 502));
+        }
         
     }
 
     public function index_delete()
     {
-        $deskripsi = $this->post('delete');
-
-        // $id_sumber_data = $this->input->post('id_sumber_data');
-        // print_r{"lll"};
-        $this->response("delete", 200 );
+        $id = $this->delete('id');
+        $this->db->where('id', $id);
+        $delete = $this->db->delete('mapel');
+        if ($delete) {
+            $this->response(array('status' => 'success'), 201);
+        } else {
+            $this->response(array('status' => 'fail', 502));
+        }
         
     }
 
