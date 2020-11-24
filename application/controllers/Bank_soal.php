@@ -8,6 +8,13 @@ class Bab_soal extends RestController {
     function __construct()
     {
         // Construct the parent class
+        header('Access-Control-Allow-Origin: *');
+        header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
+        header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+        $method = $_SERVER['REQUEST_METHOD'];
+        if($method == "OPTIONS") {
+            die();
+        }
         parent::__construct();
          $this->load->database();
     }
@@ -91,7 +98,7 @@ class Bab_soal extends RestController {
         $jsonData = $this->db->get('bab_soal')->result();
         if ( $id === null )
         {
-            // Check if the users data store contains users
+            // Check if the datas data store contains datas
             if ( $jsonData )
             {
                 // Set the response and exit
@@ -102,7 +109,7 @@ class Bab_soal extends RestController {
                 // Set the response and exit
                 $this->response( [
                     'status' => false,
-                    'message' => 'No users were found'
+                    'message' => 'No datas were found'
                 ], 404 );
             }
         }
