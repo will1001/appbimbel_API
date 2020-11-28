@@ -88,22 +88,11 @@ class Mapel extends RestController {
         }
         else
         {
-            
-            if ( array_key_exists( $id, $jsonData ) )
-            {
                 $this->db->select("*");
                 $this->db->from("mapel");
                 $this->db->where('id', $id);
                 $jsonData = $this->db->get()->result();
                 $this->response( $jsonData, 200 );
-            }
-            else
-            {
-                $this->response( [
-                    'status' => false,
-                    'message' => count($jsonData)
-                ], 404 );
-            }
         }
     }
 }
