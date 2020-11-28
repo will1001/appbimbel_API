@@ -101,7 +101,7 @@ class Mapel extends RestController {
             {
                 $this->response( [
                     'status' => false,
-                    'message' => 'No such user found'
+                    'message' => count($jsonData)
                 ], 404 );
             }
         }
