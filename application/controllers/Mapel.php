@@ -76,8 +76,8 @@ class Mapel extends RestController {
             {
                 // Set the response and exit
                 $this->response( [
-                    'status' => count($jsonData),
-                    'message' => 'No datas were found'
+                    'status' => false,
+                    'message' => count($jsonData)
                 ], 404 );
             }
             else
