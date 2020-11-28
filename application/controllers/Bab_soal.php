@@ -83,20 +83,12 @@ class Bab_soal extends RestController {
                 // Set the response and exit
                 $this->response( $jsonData, 200 );
             }
-            else if(array_key_exists( $id_mapel, $jsonData )){
+            else {
                 $this->db->select("*");
                 $this->db->from("bab_soal");
                 $this->db->where('id_mapel', $id_mapel);
                 $jsonData = $this->db->get()->result();
                 $this->response( $jsonData, 200 );
-            }
-            else
-            {
-                // Set the response and exit
-                $this->response( [
-                    'status' => false,
-                    'message' => 'No datas were found'
-                ], 404 );
             }
         }
         else
