@@ -71,18 +71,18 @@ class Kelas extends RestController {
         if ( $id === null )
         {
             // Check if the datas data store contains datas
-            if ( $jsonData )
-            {
-                // Set the response and exit
-                $this->response( $jsonData, 200 );
-            }
-            else
+             if ( count($jsonData) == 0 )
             {
                 // Set the response and exit
                 $this->response( [
                     'status' => false,
                     'message' => 'No datas were found'
                 ], 404 );
+            }
+            else
+            {
+                // Set the response and exit
+                $this->response( $jsonData, 200 );
             }
         }
         else
