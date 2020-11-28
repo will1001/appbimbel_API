@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 use chriskacerguis\RestServer\RestController;
 
-class Bab_soal extends RestController {
+class bank_soal extends RestController {
 
     function __construct()
     {
@@ -21,6 +21,8 @@ class Bab_soal extends RestController {
 
     public function index_post()
     {
+        $id = $this->post( 'id' );
+
         date_default_timezone_set('Hongkong');
         $data = array(
                     'soal' => $this->post('soal'),
@@ -39,12 +41,26 @@ class Bab_soal extends RestController {
                     'create_at' => date("Y-m-d H:i:s")
                 );
 
-        $insert = $this->db->insert('bab_soal', $data);
-        if ($insert) {
-            $this->response($data, 200);
-        } else {
-            $this->response(array('status' => 'fail', 502));
+        
+
+        if($id === null){
+            $insert = $this->db->insert('bank_soal', $data);
+            if ($insert) {
+                $this->response($data, 200);
+            } else {
+                $this->response(array('status' => 'fail', 502));
+            }
+            
+        }else{
+            $this->db->where('id', $id);
+            $delete = $this->db->delete('bank_soal');
+            if ($delete) {
+                $this->response(array('status' => $id), 201);
+            } else {
+                $this->response(array('status' => 'fail', 502));
+            }
         }
+        
         
     }
     public function index_put()
@@ -64,11 +80,10 @@ class Bab_soal extends RestController {
                     'id_mapel' => $this->put('id_mapel'),
                     'id_tingkat_kesulitan' => $this->put('id_tingkat_kesulitan'),
                     'id_kelas' => $this->put('id_kelas'),
-                    'id_bab_soal' => $this->put('id_bab_soal'),
                     'update_at' => date("Y-m-d H:i:s")
                 );
         $this->db->where('id', $id);
-        $update = $this->db->update('bab_soal', $data);
+        $update = $this->db->update('bank_soal', $data);
         if ($update) {
             $this->response($data, 200);
         } else {
@@ -81,9 +96,9 @@ class Bab_soal extends RestController {
     {
         $id = $this->delete('id');
         $this->db->where('id', $id);
-        $delete = $this->db->delete('bab_soal');
+        $delete = $this->db->delete('bank_soal');
         if ($delete) {
-            $this->response(array('status' => 'success'), 201);
+            $this->response(array('status' => $id), 201);
         } else {
             $this->response(array('status' => 'fail', 502));
         }
@@ -94,14 +109,25 @@ class Bab_soal extends RestController {
     {
        
         $id = $this->get( 'id' );
+        $id_mapel = $this->get( 'id_mapel' );
+        $id_kelas = $this->get( 'id_kelas' );
+        $id_bab_soal = $this->get( 'id_bab_soal' );
+        $id_tingkat_kesulitan = $this->get( 'id_tingkat_kesulitan' );
         
-        $jsonData = $this->db->get('bab_soal')->result();
+        $jsonData = $this->db->get('bank_soal')->result();
         if ( $id === null )
         {
             // Check if the datas data store contains datas
             if ( $jsonData )
             {
                 // Set the response and exit
+                $this->db->select("*");
+                $this->db->from("bank_soal");
+                $this->db->where('id_mapel', $id_mapel);
+                $this->db->where('id_kelas', $id_kelas);
+                $this->db->where('id_bab_soal', $id_bab_soal);
+                $this->db->where('id_tingkat_kesulitan', $id_tingkat_kesulitan);
+                $jsonData = $this->db->get()->result();
                 $this->response( $jsonData, 200 );
             }
             else
@@ -115,22 +141,11 @@ class Bab_soal extends RestController {
         }
         else
         {
-            
-            if ( array_key_exists( $id, $jsonData ) )
-            {
                 $this->db->select("*");
-                $this->db->from("bab_soal");
+                $this->db->from("bank_soal");
                 $this->db->where('id', $id);
                 $jsonData = $this->db->get()->result();
                 $this->response( $jsonData, 200 );
-            }
-            else
-            {
-                $this->response( [
-                    'status' => false,
-                    'message' => 'No such user found'
-                ], 404 );
-            }
         }
     }
 }
