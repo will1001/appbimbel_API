@@ -87,22 +87,11 @@ class Tingkat_kesulitan extends RestController {
         }
         else
         {
-            
-            if ( array_key_exists( $id, $jsonData ) )
-            {
                 $this->db->select("*");
                 $this->db->from("tingkat_kesulitan");
                 $this->db->where('id', $id);
                 $jsonData = $this->db->get()->result();
                 $this->response( $jsonData, 200 );
-            }
-            else
-            {
-                $this->response( [
-                    'status' => false,
-                    'message' => 'No such user found'
-                ], 404 );
-            }
         }
     }
 }

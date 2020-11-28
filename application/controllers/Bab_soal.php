@@ -93,22 +93,11 @@ class Bab_soal extends RestController {
         }
         else
         {
-            
-            if ( array_key_exists( $id, $jsonData ) )
-            {
                 $this->db->select("*");
                 $this->db->from("bab_soal");
                 $this->db->where('id', $id);
                 $jsonData = $this->db->get()->result();
                 $this->response( $jsonData, 200 );
-            }
-            else
-            {
-                $this->response( [
-                    'status' => false,
-                    'message' => 'No such user found'
-                ], 404 );
-            }
         }
     }
 }
