@@ -107,15 +107,17 @@ class bank_soal extends RestController {
 
     public function index_get()
     {
-       
+        
         $id = $this->get( 'id' );
+        $last = $this->get( 'last' );
+        // $this->response( $last, 200 );
         $id_mapel = $this->get( 'id_mapel' );
         $id_kelas = $this->get( 'id_kelas' );
         $id_bab_soal = $this->get( 'id_bab_soal' );
         $id_tingkat_kesulitan = $this->get( 'id_tingkat_kesulitan' );
         
         $jsonData = $this->db->get('bank_soal')->result();
-        if ( $id === null )
+        if ( $id === null && $last === null)
         {
             // Check if the datas data store contains datas
             if ( $jsonData )
@@ -138,6 +140,12 @@ class bank_soal extends RestController {
                     'message' => 'No datas were found'
                 ], 404 );
             }
+        }else if($id === null && $last !== null){
+                $this->db->select("*");
+                $this->db->from("bank_soal");
+                $this->db->order_by('id',"desc")->limit(1);
+                $jsonData = $this->db->get()->result();
+                $this->response( $jsonData, 200 );
         }
         else
         {
