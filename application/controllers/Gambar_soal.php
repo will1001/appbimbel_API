@@ -68,7 +68,7 @@ class Gambar_soal extends RestController {
      if(!empty($_FILES['file'.$i])){
         $img_name = $nameimg[$i];
         $path = $_FILES['file'.$i]['name'];
-        $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION);)
+        $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
         $img_link = '/uploads/'.$img_name."_".$id.".".$ext;
         $data = array(
                     'nama_file' => $img_name,
