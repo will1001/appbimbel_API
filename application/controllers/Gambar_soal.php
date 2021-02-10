@@ -78,7 +78,7 @@ class Gambar_soal extends RestController {
                 
                 $insert = $this->db->insert('gambar_soal', $data);
         $config['upload_path'] = './uploads/';
-        $config['allowed_types'] = 'gif|jpg|png';
+        $config['allowed_types'] = 'gif|jpg|png|PNG';
         $config['max_size']	= 20000;
         $config['max_width']  = '1024';
         $config['max_height']  = '768';
