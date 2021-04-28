@@ -110,6 +110,7 @@ class bank_soal extends RestController {
         
         $id = $this->get( 'id' );
         $last = $this->get( 'last' );
+        $cari = $this->get( 'cari' );
         // $this->response( $last, 200 );
         $id_mapel = $this->get( 'id_mapel' );
         $id_kelas = $this->get( 'id_kelas' );
@@ -117,7 +118,7 @@ class bank_soal extends RestController {
         $id_tingkat_kesulitan = $this->get( 'id_tingkat_kesulitan' );
         
         $jsonData = $this->db->get('bank_soal')->result();
-        if ( $id === null && $last === null)
+        if ( $id === null && $last === null && $cari === null)
         {
             // Check if the datas data store contains datas
             if ( $jsonData )
@@ -140,10 +141,27 @@ class bank_soal extends RestController {
                     'message' => 'No datas were found'
                 ], 404 );
             }
-        }else if($id === null && $last !== null){
+        }else if($id === null && $last !== null && $cari === null){
                 $this->db->select("*");
                 $this->db->from("bank_soal");
                 $this->db->order_by('id',"desc")->limit(1);
+                $jsonData = $this->db->get()->result();
+                $this->response( $jsonData, 200 );
+        }else if($id === null && $last === null && $cari !== null && $id_mapel === null){
+                $this->db->select("*");
+                $this->db->from("bank_soal");
+                $this->db->like('soal', $cari);
+                $jsonData = $this->db->get()->result();
+                $this->response( $jsonData, 200 );
+        }
+        else if($id === null && $last === null && $cari !== null && $id_mapel !== null){
+                $this->db->select("*");
+                $this->db->from("bank_soal");
+                $this->db->like('soal', $cari);
+                $this->db->where('id_mapel', $id_mapel);
+                $this->db->where('id_kelas', $id_kelas);
+                $this->db->where('id_bab_soal', $id_bab_soal);
+                $this->db->where('id_tingkat_kesulitan', $id_tingkat_kesulitan);
                 $jsonData = $this->db->get()->result();
                 $this->response( $jsonData, 200 );
         }

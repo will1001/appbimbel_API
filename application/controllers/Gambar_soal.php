@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 use chriskacerguis\RestServer\RestController;
 
-class Gambar_soal extends RestController {
+class gambar_soal extends RestController {
 
     function __construct()
     {
@@ -64,7 +64,11 @@ class Gambar_soal extends RestController {
 //    return json_encode(['status'=>'mantap']);
 
 // $data = array('upload_data' => $this->upload->data());
+$dataImg = [];
  for ($i=0; $i < $img_name_file_length ; $i++) {
+    //  $a = 'ini = '.(!empty($_FILES['file0'])).(!empty($_FILES['file2'])).(!empty($_FILES['file2'])).(!empty($_FILES['file3'])).(!empty($_FILES['file4']));
+    //  $b = 'a';
+    //  $this->response($a,200);
      if(!empty($_FILES['file'.$i])){
         $img_name = $nameimg[$i];
         $path = $_FILES['file'.$i]['name'];
@@ -77,24 +81,37 @@ class Gambar_soal extends RestController {
                 );
                 
                 $insert = $this->db->insert('gambar_soal', $data);
+                
+        $this->load->library('upload');
         $config['upload_path'] = './uploads/';
         $config['allowed_types'] = 'gif|jpg|png|PNG';
         $config['max_size']	= 20000;
         $config['max_width']  = '1024';
         $config['max_height']  = '768';
         $config['file_name'] = $img_name."_".$id;
+        // $config['file_name'] = time().$_FILES['file'.$i]['name'];
+        // $config['encrypt_name'] = TRUE;
+        // $this->upload->initialize($config);
 
-        $this->load->library('upload', $config);
-            if ( ! $this->upload->do_upload("file".$i))
-        {
-        $error = array('error' => $this->upload->display_errors());
+        // $this->load->library('upload', $config);
+        // $this->load->library('upload', $config);/
+        $this->upload->initialize($config);
+        // $error = array('error' => $this->upload->display_errors());
+        //         $this->response($error,200);
+        // sdadada
         
-        // $this->response($error,200);
-        // $this->load->view('upload_form', $error);
+            if ( ! $this->upload->do_upload("file".$i))
+            {
+                $error = array('error' => $this->upload->display_errors());
+                
+                // $this->response($error,200);
+                // $this->load->view('upload_form', $error);
             }
             else
             {
+                // $this->upload->initialize($config);
                 $data = array('upload_data' => $this->upload->data());
+                
 
                 // $this->load->view('upload_success', $data);
                 // $this->response(empty($_FILES['file1']),200);
@@ -119,7 +136,7 @@ class Gambar_soal extends RestController {
     {
         $id = $this->delete('id');
         $this->db->where('id', $id);
-        $delete = $this->db->delete('Gambar_soal');
+        $delete = $this->db->delete('gambar_soal');
         if ($delete) {
             $this->response(array('status' => 'success'), 201);
         } else {
@@ -134,7 +151,7 @@ class Gambar_soal extends RestController {
         $id_soal = $this->get( 'id_soal' );
         $nama_file = $this->get( 'nama_file' );
         
-        $jsonData = $this->db->get('Gambar_soal')->result();
+        $jsonData = $this->db->get('gambar_soal')->result();
         if ( $id_soal === null )
         {
             // Check if the datas data store contains datas
@@ -145,7 +162,7 @@ class Gambar_soal extends RestController {
             }
             else {
                 $this->db->select("*");
-                $this->db->from("Gambar_soal");
+                $this->db->from("gambar_soal");
                 $this->db->where('id_soal', $id_soal);
                 $this->db->where('nama_dile', $id_soal);
                 $jsonData = $this->db->get()->result();
@@ -155,7 +172,7 @@ class Gambar_soal extends RestController {
         else
         {
                 $this->db->select("*");
-                $this->db->from("Gambar_soal");
+                $this->db->from("gambar_soal");
                 $this->db->where('id_soal', $id_soal);
                 // $this->db->where('nama_file', $nama_file);
                 $jsonData = $this->db->get()->result();

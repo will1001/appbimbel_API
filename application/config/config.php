@@ -23,7 +23,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'https://app-bimbel-web.herokuapp.com/';
+// $config['base_url'] = 'https://app-bimbel-web.herokuapp.com/';
+// $config['base_url'] = 'http://wilirahmatm.xyz/';
+$config['base_url'] = 'localhost/app_bimbel_api/';
 
 /*
 |--------------------------------------------------------------------------
