@@ -21,8 +21,15 @@ class Transaction_history extends RestController {
 
     public function index_post()
     {
+        date_default_timezone_set('Hongkong');
         $data = array(
-                    'deskripsi' => $this->post('deskripsi')
+                    'id_user' => $this->post('id_user'),
+                    'id_paket' => $this->post('id_paket'),
+                    'payment_type' => $this->post('payment_type'),
+                    'jumlah' => $this->post('jumlah'),
+                    'status' => $this->post('status'),
+                    'description' => $this->post('description'),
+                    'created_at' => date("Y-m-d H:i:s")
                 );
 
         $insert = $this->db->insert('transaction_history', $data);
@@ -35,9 +42,17 @@ class Transaction_history extends RestController {
     }
     public function index_put()
     {
+        date_default_timezone_set('Hongkong');
+
         $id = $this->put('id');
         $data = array(
-                    'deskripsi' => $this->put('deskripsi')
+                    'id_user' => $this->put('id_user'),
+                    'id_pake' => $this->put('id_paket'),
+                    'payment_typ' => $this->put('payment_type'),
+                    'jumla' => $this->put('jumlah'),
+                    'statu' => $this->put('status'),
+                    'descriptio' => $this->put('description'),
+                    'update_at' => date("Y-m-d H:i:s")
                 );
         $this->db->where('id', $id);
         $update = $this->db->update('transaction_history', $data);
@@ -66,7 +81,8 @@ class Transaction_history extends RestController {
     {
        
         $id = $this->get( 'id' );
-        
+        $transaction = $this->get( 'transaction' );
+
         $jsonData = $this->db->get('transaction_history')->result();
         if ( $id === null )
         {
@@ -78,10 +94,28 @@ class Transaction_history extends RestController {
                     'status' => false,
                     'message' => 'No datas were found'
                 ], 404 );
+            }else  if($transaction == "totalTransaction"){
+                $this->db->select("COUNT(jumlah) as total");
+                $this->db->from("transaction_history");
+                $jsonData = $this->db->get()->result();
+                $this->response( $jsonData, 200 );
+            
+            }else  if($transaction == "totalEarning"){
+                $this->db->select("SUM(jumlah) as total");
+                $this->db->from("transaction_history");
+                $jsonData = $this->db->get()->result();
+                $this->response( $jsonData, 200 );
             }
             else
             {
                 // Set the response and exit
+                
+                $this->db->select("*");
+                $this->db->from("transaction_history");
+                $this->db->join('users','users.id = transaction_history.id_user');
+                $this->db->join('paket_app','paket_app.id = transaction_history.id_paket');
+                // $this->db->join('sub_bab_soal','sub_bab_soal.id = video_materi.id_sub_bab');
+                $jsonData = $this->db->get()->result();
                 $this->response( $jsonData, 200 );
             }
         }

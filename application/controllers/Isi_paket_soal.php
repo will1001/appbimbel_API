@@ -122,7 +122,7 @@ class Isi_paket_soal extends RestController {
                     $this->db->where('isi_paket_soal.id_tryout_part', $id_tryout_part);
                 }
                 $this->db->where('isi_paket_soal.id_paket', $id);
-                $this->db->order_by('no_soal'); 
+                $this->db->order_by('no_soal', 'ASC'); 
                 $jsonData = $this->db->get()->result();
                 $this->response( $jsonData, 200 );
         }

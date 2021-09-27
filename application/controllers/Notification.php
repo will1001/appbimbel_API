@@ -21,11 +21,14 @@ class Notification extends RestController {
 
     public function index_post()
     {
+        date_default_timezone_set('Hongkong');
+
         $data = array(
                     'id_users' => $this->post('id_users'),
+                    'title' => $this->post('title'),
                     'description' => $this->post('description'),
                     'status' => $this->post('status'),
-                    'created_at' => $this->post('created_at')
+                    'created_at' => date("Y-m-d H:i:s")
                 );
 
         $insert = $this->db->insert('notification', $data);
@@ -38,12 +41,14 @@ class Notification extends RestController {
     }
     public function index_put()
     {
+        date_default_timezone_set('Hongkong');
         $id = $this->put('id');
         $data = array(
                     'id_users' => $this->put('id_users'),
+                    'title' => $this->put('title'),
                     'description' => $this->put('description'),
                     'status' => $this->put('status'),
-                    'updated_at' => $this->put('updated_at')
+                    'updated_at' => date("Y-m-d H:i:s")
                 );
         $this->db->where('id', $id);
         $update = $this->db->update('notification', $data);

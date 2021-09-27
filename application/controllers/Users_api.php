@@ -80,6 +80,7 @@ class Users_api extends RestController {
         $role = $this->get( 'role' );
         $min = $this->get( 'min' );
         $max = $this->get( 'max' );
+        $member_count = $this->get( 'member_count' );
         
         $jsonData = $this->db->get('users')->result();
         if ( $id === null )
@@ -120,7 +121,14 @@ class Users_api extends RestController {
                 $this->db->order_by($max, 'DESC');
                 $jsonData = $this->db->get()->result();
                 $this->response( $jsonData, 200 );
-            }
+            }if($jsonData && $member_count == "total"){
+                $this->db->select("COUNT(role) as total");
+                $this->db->from("users");
+                 $this->db->join('users_details', 'users_details.id_user = users.id','left');
+                 $this->db->where('role', "Member");
+                 $jsonData = $this->db->get()->result();
+                 $this->response( $jsonData, 200 );
+             }
             else {
                $this->response( $jsonData, 200 );
             }

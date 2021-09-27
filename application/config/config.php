@@ -25,7 +25,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 // $config['base_url'] = 'https://app-bimbel-web.herokuapp.com/';
 // $config['base_url'] = 'http://wilirahmatm.xyz/';
-$config['base_url'] = 'localhost/app_bimbel_api/';
+$config['base_url'] = 'https://bimbelapp.000webhostapp.com/';
+// $config['base_url'] = 'localhost/app_bimbel_api/';
+
 
 /*
 |--------------------------------------------------------------------------

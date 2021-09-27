@@ -105,14 +105,24 @@ class Users_details extends RestController {
         
         $id = $this->get( 'id_user' );
         $id_mapel = $this->get( 'id_mapel' );
+        $email = $this->get( 'email' );
         
         $jsonData = $this->db->get('users_details')->result();
         if ( $id === null )
         {
             // Check if the datas data store contains datas
-            if ( $jsonData && $id_mapel == null )
+            if ( $jsonData && $id_mapel == null && $email == null)
             {
                 // Set the response and exit
+                $this->response( $jsonData, 200 );
+            }
+            if ( $jsonData && $email != null && $id_mapel == null )
+            {
+                $this->db->select("*");
+                $this->db->from("users_details");
+                $this->db->join('users', 'users_details.id_user = users.id','left');
+                $this->db->where('email', $email);
+                $jsonData = $this->db->get()->result();
                 $this->response( $jsonData, 200 );
             }
             else {
