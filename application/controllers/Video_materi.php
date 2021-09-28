@@ -27,6 +27,7 @@ class Video_materi extends RestController {
             'judul' => $this->post('judul'),
             'tutor' => $this->post('tutor'),
             'Deskripsi' => $this->post('deskripsi'),
+            'thumbnail' => $this->post('thumbnail'),
             'link_video' => $this->post('link_video'),
             'id_sub_bab' => $this->post('id_sub_bab'),
             'create_at' => date("Y-m-d H:i:s")
@@ -56,6 +57,7 @@ class Video_materi extends RestController {
                     'judul' => $this->put('judul'),
                     'tutor' => $this->put('tutor'),
                     'Deskripsi' => $this->put('deskripsi'),
+                    'thumbnail' => $this->put('thumbnail'),
                     'link_video' => $this->put('link_video'),
                     'id_sub_bab' => $this->put('id_sub_bab'),
                     'update_at' => date("Y-m-d H:i:s")
