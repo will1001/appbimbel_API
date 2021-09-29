@@ -28,6 +28,7 @@ class Notification extends RestController {
                     'title' => $this->post('title'),
                     'description' => $this->post('description'),
                     'status' => $this->post('status'),
+                    'send_status' => $this->post('send_status'),
                     'created_at' => date("Y-m-d H:i:s")
                 );
 
@@ -48,6 +49,7 @@ class Notification extends RestController {
                     'title' => $this->put('title'),
                     'description' => $this->put('description'),
                     'status' => $this->put('status'),
+                    'send_status' => $this->put('send_status'),
                     'updated_at' => date("Y-m-d H:i:s")
                 );
         $this->db->where('id', $id);
